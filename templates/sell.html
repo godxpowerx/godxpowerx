@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sell
+{% endblock %}
+
+{% block main %}
+<div class="container p-1 d-flex flex-row">
+    <form id="sell" action="/sell" method="post" class="d-flex ">
+        <select name="symbol">
+        <option value="">--Pick a symbol--</option>
+        {% if listSymbol %}
+        {% for sym in listSymbol %}
+            <option value="{{sym['symbol']}}">{{sym['symbol']}}</option>
+        {% endfor %}
+        {% endif %}
+        </select>
+        <input autocomplete="off" autofocus class="form-control mx-4 w-auto" name="shares" value="{{Shares}}"
+            placeholder="how many share" type="number" min="1">
+        <button class="btn btn-primary" type="submit">SELL</button>
+    </form>
+    <div class="p-1">
+        {% if error %}
+        <p class=error><strong>Error:</strong> {{ error }}</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

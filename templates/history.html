@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <p class="bg-secondary p-1 lead text-dark lead">
+       Click On BUY Or SELL To Check Your History
+    </p>
+</div>
+
+<div class="tab container">
+    <button  type="button" class="btn bg-info btn-primary btn-lg tablinks float-start" onclick="openCity(event, 'sell')">SELL</button>
+    <button  type="button" class="btn bg-info btn-primary btn-lg tablinks float-end" onclick="openCity(event, 'buy')">BUY</button>
+</div>
+
+<div id="sell" class="tabcontent" style="display: none;">
+    <div class="container ">
+        <table class="table table-success table-striped">
+            <thead>
+                <tr>
+                    <th class="text-start lead">Transaction Id</th>
+                    <th class="text-start lead">Company Name</th>
+                    <th class="text-start lead">Symbol</th>
+                    <th class="text-start lead">Shares</th>
+                    <th class="text-end lead">Price</th>
+                    <th class="text-end lead">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if sell %}
+                {% for x in sell %}
+                <tr>
+                    <td class="text-start lead">{{x["sell_id"]}}</td>
+                    <td class="text-start lead">{{x["company_name"]}}</td>
+                    <td class="text-start lead">{{x["symbol"]}}</td>
+                    <td class="text-start lead">{{x["share"]}}</td>
+                    <td class="text-end lead">{{x["price"] | usd}}</td>
+                    <td class="text-end lead">{{x["dates"]}}</td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="buy" class="tabcontent" style="display: none;">
+    <div class="container ">
+        <table class="table table-success table-striped">
+            <thead>
+                <tr>
+                    <th class="text-start lead">Transaction Id</th>
+                    <th class="text-start lead">Company Name</th>
+                    <th class="text-start lead">Symbol</th>
+                    <th class="text-start lead">Shares</th>
+                    <th class="text-end lead">Price</th>
+                    <th class="text-end lead">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if buy %}
+                {% for x in buy %}
+                <tr>
+                    <td class="text-start lead">{{x["buy_id"]}}</td>
+                    <td class="text-start lead">{{x["company_name"]}}</td>
+                    <td class="text-start lead">{{x["symbol"]}}</td>
+                    <td class="text-start lead">{{x["share"]}}</td>
+                    <td class="text-end lead">{{x["price"] | usd}}</td>
+                    <td class="text-end lead">{{x["dates"]}}</td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+</script>
+{% endblock %}

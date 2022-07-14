@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Buy Stock
+{% endblock %}
+
+{% block main %}
+<div class="container p-1 d-flex flex-row">
+<form id="buy" action="/buy" method="post" class="d-flex ">
+        <input autocomplete="off" autofocus class="form-control mx-4 w-auto"  name="symbol" value="{{symbol}}"
+            placeholder="Enter symbol you want to buy" type="text">
+        <input autocomplete="off" autofocus class="form-control mx-4 w-auto" name="shares" value="{{Shares}}"
+            placeholder="how many share" type="number" min="1">
+    <button class="btn btn-primary" type="submit">BUY</button>
+</form>
+<div class="p-1">
+    {% if error %}
+    <p class=error><strong>Error:</strong> {{ error }}</p>
+    {% endif %}
+</div>
+</div>
+
+{% endblock %}

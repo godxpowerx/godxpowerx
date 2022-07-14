@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+{% if error %}
+    <p class=error><strong>Error:</strong> {{ error }}</p>
+{% endif %}
+    <form action="/quote" method="post">
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="quote" name="symbol"
+                placeholder="Enter symbol to get Quote" type="text">
+        </div>
+        <button class="btn btn-primary" type="submit">Quote</button>
+    </form>
+
+<div class="container p-5">
+{% if result %}
+<ul class="list-group">
+    {% for key, value in result.items() %}
+        {% if key == "price" %}
+             <li class="list-group-item">{{key}} : {{value | usd}}</li>
+         {% else %}
+            <li class="list-group-item">{{key}} : {{value}}</li>
+         {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home page
+{% endblock %}
+
+{% block main %}
+<div class="container d-flex flex-row">
+<form action="/quote" method="post" class="d-flex">
+    <div class="m-1">
+        <input autocomplete="off" autofocus class="form-control mx-auto lead w-auto" id="quote" name="symbol"
+            placeholder="Enter symbol to buy stock" type="text">
+    </div>
+    <button class="btn bg-info btn-primary m-1" type="submit">Quote</button>
+</form>
+{% if addcash %}
+    <form id="buy" action="/addcash" method="post" class="d-flex ">
+        <div class="m-1">
+        <input autocomplete="off" autofocus class="form-control mx-auto lead w-auto" id="username" name="fund"
+            placeholder="Amount to transfer" type="text">
+        </div>
+            <button class="btn btn-primary m-1" type="submit">Add Cash</button>
+    </form>
+    {% endif %}
+
+{% if error %}
+<p class="error text-danger d-flex lead text-end" style="text-size: 10px"> <strong></strong> {{ error }}</p>
+{% endif %}
+
+{% if result %}
+<div class="container">
+    <ul class="list-group list-group-horizontal row">
+        <form id="buy" action="/buy" method="post" class="d-flex ">
+        <input class="border-0 lead"style="width: 256px" value="{{result['name']}} " readonly>
+        <input class="border-0 lead "style="width: 106px" name="" value="{{result['price'] | usd}}" readonly>
+        <input class="border-0 lead  "style="width: 50px" name="symbol" value="{{result['symbol']}}" readonly>
+        <input style="width: 100px" autocomplete="off" autofocus class="border-0 lead " name="shares"
+            placeholder="stocks" type="number" min="1">
+        <div>
+        <button class="btn btn-primary" type="submit">BUY</button>
+        </div>
+        </form>
+    </ul>
+</div>
+{% endif %}
+</div>
+</div>
+<div class="container">
+<p class="bg-info p-1  text-dark lead">Stocks With The Current Price</p>
+</div>
+<div class="container ">
+<table class="table table-success table-striped">
+    <thead>
+        <tr>
+            <th class="text-start lead">Company Name</th>
+            <th class="text-start lead">Symbol</th>
+            <th class="text-start lead">Shares</th>
+            <th class="text-end lead">Price</th>
+            <th class="text-end lead">Total</th>
+            <th class="text-end lead">SELL</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% if user %}
+        {% for x in user %}
+        <tr>
+            <td class="text-start lead">{{x["company_name"]}}</td>
+            <td class="text-start lead">{{x["symbol"]}}</td>
+            <td class="text-start">{{x["share"]}}</td>
+            <td class="text-end">{{x["price"] | usd}}</td>
+            <td class="text-end">{{x["total"] | usd}}</td>
+            <td class="text-end">
+                <form id="sell" action="/sell" method="post" class="d-flex float-end">
+                <input style="width:70px" autocomplete="off" autofocus class="" name="share" value="1"
+                 type="number" min="1">
+                <input type="hidden" name="symbol" value="{{x['symbol']}}" readonly>
+            <button class="btn lead btn-primary"  type="submit">
+                SELL
+            </button>
+            </form>
+            </td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+    </tbody>
+    <tfoot>
+        {% if total %}
+        <tr>
+            <td class="border-0 fw-bold text-end lead" colspan="4">Total stock</td>
+            <td class="border-0 text-end">{{total | usd}}</td>
+        </tr>
+
+        {% if amount %}
+        <tr>
+            <td class="border-0 fw-bold text-end lead" colspan="4">Cash balance in account</td>
+            <td class="border-0  text-end">{{amount | usd}}</td>
+        </tr>
+
+        <tr>
+            <td class="border-0 fw-bold text-end lead" colspan="4">Grand Total</td>
+            <td class="border-0  text-end">{{grand_total | usd}}</td>
+        </tr>
+        {% endif %}
+        {% endif %}
+    </tfoot>
+</table>
+</div>
+{% endblock %}
